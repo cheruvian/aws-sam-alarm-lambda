@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-east-1:000000000000:AlarmTopic:00000000-0000-0000-0000-000000000000",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "000000-0000-0000-0000-00000000",
+                "TopicArn": "arn:aws:sns:us-east-1:000000000000:AlarmTopic",
+                "Subject": "ALARM: \"TestAlarm\" in US East (N. Virginia)",
+                "Message": "{\"AlarmName\":\"TestAlarm\",\"AlarmDescription\":\"Test\",\"AWSAccountId\":\"000000000000\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Threshold Crossed: 1 datapoint [5.0 (09/11/17 08:38:00)] was greater than or equal to the threshold (0.0).\",\"StateChangeTime\":\"2017-11-09T08:48:43.287+0000\",\"Region\":\"US East (N. Virginia)\",\"OldStateValue\":\"OK\",\"Trigger\":{\"MetricName\":\"MetricName\",\"Namespace\":\"Namespace\",\"StatisticType\":\"Statistic\",\"Statistic\":\"AVERAGE\",\"Unit\":null,\"Dimensions\":[],\"Period\":300,\"EvaluationPeriods\":1,\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"Threshold\":0.0,\"TreatMissingData\":\"\",\"EvaluateLowSampleCountPercentile\":\"\"}}",
+                "Timestamp": "2017-11-09T08:48:43.331Z",
+                "SignatureVersion": "1",
+                "Signature": "********************************************************************************************************************************************************************************************************************************************************************************************************************************************************",
+                "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-********************************.pem",
+                "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:000000000000:AlarmTopic:00000000-0000-0000-0000-000000000000",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

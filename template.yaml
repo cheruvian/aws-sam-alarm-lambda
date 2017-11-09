@@ -1,0 +1,67 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A function triggered by a CloudWatch Alarm.
+Outputs:
+  AlarmTopicArn:
+    Description: The Alarm Topic Arn. This can be provided in other templates to have their alarms invoke this Lambda function.
+    Value: !Ref AlarmTopic
+Parameters:
+  AlarmFunctionName:
+    Description: The name of the Alarm Lambda function triggered by the Spending Alarm.
+    Default: AlarmFunction
+    Type: String
+  AlarmTopicName:
+    Description: The name of the Alarm Topic.
+    Default: AlarmTopic
+    Type: String
+  AlarmTopicDisplayName:
+    Description: The display name of the Alarm Topic.
+    Default: AlarmTopic
+    Type: String
+  SpendingAlarmThreshold:
+    Description: The spending threshold before the sample spending alarm is triggered.
+    Default: 100
+    Type: Number
+Resources:
+  AlarmFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Ref AlarmFunctionName
+      Handler: alarm-function/index.handler
+      Runtime: nodejs6.10
+      CodeUri: ./build/alarm-function.zip
+      Events:
+        AlarmTopic: 
+          Type: SNS
+          Properties:
+            Topic: !Ref AlarmTopic
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      DisplayName: !Ref AlarmTopicDisplayName
+      TopicName: !Ref AlarmTopicName
+  AlarmTopicFunctionSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt AlarmFunction.Arn
+      Protocol: lambda
+      TopicArn: !Ref AlarmTopic
+  SpendingAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      Namespace: AWS/Billing
+      MetricName: EstimatedCharges
+      AlarmDescription: !Sub "Alarm if AWS spending is over ${SpendingAlarmThreshold}"
+      Dimensions:
+      - Name: Currency
+        Value: USD
+      Statistic: Maximum
+      Period: 21600
+      EvaluationPeriods: 1
+      Threshold:
+        Ref: SpendingAlarmThreshold
+      ComparisonOperator: GreaterThanEqualThreshold
+      AlarmActions:
+      - Ref: AlarmTopic
+      InsufficientDataActions:
+      - Ref: AlarmTopic

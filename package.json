@@ -1,0 +1,40 @@
+{
+  "name": "aws-sam-alarm-lambda",
+  "version": "1.0.0",
+  "description": "This AWS Serverless Application Model template provides the configuration needed to set up an AWS Lambda Function that is invoked whenver a CloudWatch alarm is triggered.",
+  "main": "alarm-function/index.js",
+  "scripts": {
+    "gulp": "node_modules/gulp/bin/gulp.js",
+    "sample": "npm run gulp -- sample",
+    "lint": "node_modules/eslint/bin/eslint.js",
+    "build": "pushd alarm-function && npm install && popd && npm run gulp",
+    "package": "aws cloudformation package --template-file template.yaml --output-template-file build/packaged-template.yaml --s3-bucket $S3_BUCKET",
+    "deploy": "aws cloudformation deploy --template-file build/packaged-template.yaml --capabilities CAPABILITY_IAM --stack-name aws-sam-alarm-lambda",
+    "pd": "npm run package && npm run deploy",
+    "bpd": "npm run build && npm run pd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheruvian/aws-sam-alarm-lambda.git"
+  },
+  "keywords": [
+    "AWS",
+    "SAM",
+    "AWS SAM",
+    "Alarm",
+    "Lambda",
+    "CloudWatch"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cheruvian/aws-sam-alarm-lambda/issues"
+  },
+  "homepage": "https://github.com/cheruvian/aws-sam-alarm-lambda#readme",
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-google": "^0.9.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-zip": "^4.0.0"
+  }
+}
